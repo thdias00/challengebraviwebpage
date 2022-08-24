@@ -8,7 +8,7 @@
 
 ## Deploying the Application with Vercel
 
-> http://challengebraviwebpage.vercel.app/
+> https://challengebraviwebpage-i13g2emvs-thdias00.vercel.app/
 
 ## Pre-requisites
 
