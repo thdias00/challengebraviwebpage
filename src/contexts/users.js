@@ -1,6 +1,6 @@
 import { createContext, useContext, useState, useEffect } from "react";
 import api from "../services/api";
-//import toast from 'react-hot-toast';
+import toast from 'react-hot-toast';
 
 export const UserContext = createContext();
 
@@ -10,7 +10,7 @@ export const UserProvider = ({ children }) => {
   const getUsers = () => {
     api.get('/users')
     .then(response => {
-        setUsers(response.data);
+        setUsers(response.data.users);
     })
     .catch(err => {
         setUsers([]);
@@ -22,60 +22,82 @@ export const UserProvider = ({ children }) => {
     getUsers();
   }, [])
 
-//   const habitCreate = (obj) => {
-//     const { id } = JSON.parse(localStorage.getItem("@happyhabits:user")) || {};
-//     const token = localStorage.getItem("@happyhabits:token") || '';
-//     api.post('/habits/', { ...obj, "user": id }, {
-//       headers: {
-//         Authorization: `Bearer ${token}`
-//       }
-//     })
-//       .then(response => {
-//         getHabits();
-//         toast.success('Hábito criado!');
-//       })
-//       .catch(err => {
-//         toast.error('Erro ao criar hábito!')
-//         console.log(err);
-//       })
-//   }
-//   const habitUpdate = (obj, habitId) => {
-//     const token = localStorage.getItem("@happyhabits:token") || '';
-//     api.patch(`/habits/${habitId}/`, obj, {
-//       headers: {
-//         Authorization: `Bearer ${token}`
-//       }
-//     })
-//       .then(response => {
-//         getHabits();
-//         toast.success('Hábito atualizado!')
-//         console.log(response);
-//       })
-//       .catch(err => {
-//         toast.error('Erro ao atualizar hábito!')
-//         console.log(err)
-//       })
-//   }
-//   const habitDelete = (habitId) => {
-//     const token = localStorage.getItem("@happyhabits:token") || '';
-//     api.delete(`/habits/${habitId}/`, {
-//       headers: {
-//         Authorization: `Bearer ${token}`
-//       }
-//     })
-//       .then(response => {
-//         getHabits();
-//         toast.success('Hábito deletado!')
-//         console.log(response);
-//       })
-//       .catch(err => {
-//         toast.error('Erro ao deletar hábito!')
-//         console.log(err)
-//       })
-//   }
+  const registerPerson = (obj) => {
+
+    api.post('/users', obj)
+      .then(response => {
+        getUsers();
+        toast.success('Person Registered Successfully!');
+      })
+      .catch(err => {
+        toast.error('Error when registering the person!')
+        console.log(err);
+      })
+  }
+
+  const updatePerson = (obj, id) => {
+    api.patch(`/users/${id}`, obj)
+      .then(response => {
+        getUsers();
+        toast.success('Person Updated Successfully!')
+      })
+      .catch(err => {
+        toast.error('Error when updating the person!')
+        console.log(err)
+      })
+  }
+
+  const deletePerson = (id) => {
+    api.delete(`/users/${id}`)
+      .then(response => {
+        getUsers();
+        toast.success('Person Deleted Successfully!')
+      })
+      .catch(err => {
+        toast.error('Error when deleting the person!')
+        console.log(err)
+      })
+  }
+
+  const addContact = (obj) => {
+    api.post('/contacts', obj)
+      .then(response => {
+        getUsers();
+        toast.success('Contact Registered Successfully!');
+      })
+      .catch(err => {
+        toast.error('Error when registering the contact!')
+        console.log(err);
+      })
+  }
+
+  const updateContact = (obj, id) => {
+    api.patch(`/contacts/${id}`, obj)
+      .then(response => {
+        getUsers();
+        toast.success('Contact Updated Successfully!')
+      })
+      .catch(err => {
+        toast.error('Error when updating the contact!')
+        console.log(err)
+      })
+  }
+
+  const delContact = (id) => {
+
+    api.delete(`/contacts/${id}`)
+      .then(response => {
+        getUsers();
+        toast.success('Contact Deleted Successfully!');
+      })
+      .catch(err => {
+        toast.error('Error when deleting the contact!')
+        console.log(err);
+      })
+  }
 
   return (
-    <UserContext.Provider value={{ users }}>
+    <UserContext.Provider value={{ users, registerPerson, updatePerson, deletePerson, updateContact, addContact, delContact }}>
       {children}
     </UserContext.Provider>
   )
